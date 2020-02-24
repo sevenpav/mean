@@ -2,14 +2,14 @@ const express = require('express')
 const router = express.Router()
 const auth = require('../../middleware/auth')
 const User = require('../../models/User')
-const { check, validationResult } = require('express-validator/check')
+const { check, validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 const config = require('config')
 const bcrypt = require('bcryptjs')
 
-// @route  GET api/auth
-// @desc   Test route
-// @access Public
+// @route   GET api/auth
+// @desc    Test route
+// @access  Public
 router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password')
@@ -21,9 +21,9 @@ router.get('/', auth, async (req, res) => {
   }
 })
 
-// @route  POST api/auth
-// @desc   Авторизация пользователя & получение токена
-// @access Public
+// @route   POST api/auth
+// @desc    Авторизация пользователя & получение токена
+// @access  Public
 router.post(
   '/',
   [
