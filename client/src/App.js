@@ -1,5 +1,3 @@
-import 'materialize-css/sass/materialize.scss'
-import 'materialize-css/dist/js/materialize'
 import React, { Fragment } from 'react'
 import { Provider } from 'react-redux'
 import store from './store'

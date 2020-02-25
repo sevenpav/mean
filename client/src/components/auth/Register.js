@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setAlert } from '../../actions/alert'
+import { register } from '../../actions/auth'
 
-const Register = ({ setAlert }) => {
+const Register = ({ setAlert, register }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,8 +23,7 @@ const Register = ({ setAlert }) => {
     if (password !== confirmPassword) {
       setAlert('Пароли не совпадают')
     } else {
-      console.log(formData)
-      console.log('Success')
+      register({ name, email, password })
     }
   }
 
@@ -41,7 +41,6 @@ const Register = ({ setAlert }) => {
               type='text'
               name='name'
               className='validate'
-              required
             />
             <label htmlFor='first_name'>Имя</label>
           </div>
@@ -53,7 +52,6 @@ const Register = ({ setAlert }) => {
               type='email'
               name='email'
               className='validate'
-              required
             />
             <label htmlFor='email'>E-mail</label>
           </div>
@@ -66,7 +64,6 @@ const Register = ({ setAlert }) => {
               name='password'
               className='validate'
               minLength='6'
-              required
             />
             <label htmlFor='password'>Пароль</label>
           </div>
@@ -79,7 +76,6 @@ const Register = ({ setAlert }) => {
               name='confirmPassword'
               className='validate'
               minLength='6'
-              required
             />
             <label htmlFor='confirm_password'>Подтвердите пароль</label>
           </div>
@@ -97,7 +93,8 @@ const Register = ({ setAlert }) => {
 }
 
 Register.propTypes = {
-  setAlert: PropTypes.func.isRequired
+  setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired
 }
 
-export default connect(null, { setAlert })(Register)
+export default connect(null, { setAlert, register })(Register)
