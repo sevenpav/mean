@@ -36,7 +36,7 @@ router.post(
         return res.json(post)
       } catch (err) {
         console.error(err.message)
-        res.status(500).send('Server error')
+        res.status(500).send('Server Error')
       }
     }
 
@@ -57,7 +57,7 @@ router.get('/', auth, async (req, res) => {
   } catch (err) {
     console.error(err.message)
 
-    res.status(500).send('Server error')
+    res.status(500).send('Server Error')
   }
 })
 
@@ -78,7 +78,7 @@ router.get('/:id', auth, async (req, res) => {
     if (err.kind === 'objectId') {
       return res.status(404).json({ msg: 'Пост не найден' })
     }
-    res.status(500).send('Server error')
+    res.status(500).send('Server Error')
   }
 })
 
@@ -105,7 +105,7 @@ router.delete('/:id', auth, async (req, res) => {
     if (err.kind === 'objectId') {
       return res.status(404).json({ msg: 'Пост не найден' })
     }
-    res.status(500).send('Server error')
+    res.status(500).send('Server Error')
   }
 })
 
@@ -130,7 +130,7 @@ router.put('/like/:id', auth, async (req, res) => {
   } catch (err) {
     console.error(err.message)
 
-    res.status(500).send('Server error')
+    res.status(500).send('Server Error')
   }
 })
 
@@ -160,7 +160,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
   } catch (err) {
     console.error(err.message)
 
-    res.status(500).send('Server error')
+    res.status(500).send('Server Error')
   }
 })
 
@@ -199,7 +199,7 @@ router.post(
         return res.json(post.comments)
       } catch (err) {
         console.error(err.message)
-        res.status(500).send('Server error')
+        res.status(500).send('Server Error')
       }
     }
 
@@ -238,7 +238,7 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
   } catch (err) {
     console.error(err.message)
 
-    res.send(500).send('Server error')
+    res.send(500).send('Server Error')
   }
 })
 

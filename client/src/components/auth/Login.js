@@ -17,51 +17,44 @@ const Login = () => {
   }
 
   return (
-    <div className="columns">
-      <form
-        onSubmit={e => onSubmit(e)}
-        className="column is-4 is-offset-one-quarter"
-      >
-        <h1 className="title">Войти в аккаунт</h1>
+    <div className='row'>
+      <form onSubmit={e => onSubmit(e)} className='col s12 l4 offset-l4'>
+        <div className='row'>
+          <h3 className='center-align'>Личный кабинет</h3>
 
-        <div className="field">
-          <div className="control has-icons-left has-icons-right">
+          <div className='input-field col s12'>
             <input
-              className="input"
-              name="email"
-              type="email"
-              placeholder="Введите email"
               value={email}
               onChange={e => onChange(e)}
+              id='email'
+              type='email'
+              name='email'
+              className='validate'
               required
             />
-            <span className="icon is-small is-left">
-              <i className="fas fa-envelope"></i>
-            </span>
+            <label htmlFor='email'>E-mail</label>
           </div>
-        </div>
-        <div className="field">
-          <p className="control has-icons-left">
+          <div className='input-field col s12'>
             <input
-              className="input"
-              name="password"
-              type="password"
-              placeholder="Пароль"
               value={password}
               onChange={e => onChange(e)}
-              minLength="6"
+              id='password'
+              type='password'
+              name='password'
+              className='validate'
+              minLength='6'
               required
             />
-            <span className="icon is-small is-left">
-              <i className="fas fa-lock"></i>
-            </span>
-          </p>
-        </div>
+            <label htmlFor='password'>Пароль</label>
+          </div>
 
-        <div className="control">
-          <button type="submit" className="button is-primary">
-            Войти
-          </button>
+          <div className='col s12 center-align'>
+            <button
+              className='btn waves-effect waves-light btn-large'
+              type='submit'>
+              Войти
+            </button>
+          </div>
         </div>
       </form>
     </div>
