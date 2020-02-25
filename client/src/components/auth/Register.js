@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { setAlert } from '../../actions/alert'
 
-const Register = () => {
+const Register = ({ setAlert }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,7 +20,7 @@ const Register = () => {
   const onSubmit = async e => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      console.log('Password error')
+      setAlert('Пароли не совпадают')
     } else {
       console.log(formData)
       console.log('Success')
@@ -93,4 +96,8 @@ const Register = () => {
   )
 }
 
-export default Register
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired
+}
+
+export default connect(null, { setAlert })(Register)
