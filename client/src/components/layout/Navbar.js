@@ -13,6 +13,10 @@ const Navbar = () => {
     <Fragment>
       <nav>
         <div className='nav-wrapper blue-grey lighten-2'>
+          <Link to='/' className='brand-logo'>
+            <i className='material-icons'>developer_mode</i>
+            DevConnector
+          </Link>
           <a
             href='#!'
             data-target='mobile-nav'
