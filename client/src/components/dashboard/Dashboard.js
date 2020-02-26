@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { getCurrentProfile } from '../../actions/profile'
 import PropTypes from 'prop-types'
 import Spinner from '../layout/Spinner'
+import DashboardActions from './DashboardActions'
 
 const Dashboard = ({
   getCurrentProfile,
@@ -28,7 +29,7 @@ const Dashboard = ({
               <span className='white-text'>
                 <h4>Здравствуйте {user && user.name}</h4>
                 {profile ? (
-                  <p>Ваш профиль</p>
+                  <DashboardActions />
                 ) : (
                   <div>
                     <p>Заполните ваш профиль</p>

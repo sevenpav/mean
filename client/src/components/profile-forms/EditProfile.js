@@ -2,10 +2,14 @@ import React, { useState, createRef, useEffect, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import M from 'materialize-css/dist/js/materialize'
-import { createProfile } from '../../actions/profile'
+import { createProfile, getCurrentProfile } from '../../actions/profile'
 import { Link, useHistory } from 'react-router-dom'
 
-const CreateProfile = ({ createProfile }) => {
+const EditProfile = ({
+  createProfile,
+  getCurrentProfile,
+  profile: { profile, loading }
+}) => {
   const [formData, setFormData] = useState({
     company: '',
     website: '',
@@ -39,6 +43,25 @@ const CreateProfile = ({ createProfile }) => {
   const [displaySocialInputs, toggleDisplaySocialInputs] = useState(false)
 
   useEffect(() => {
+    getCurrentProfile()
+
+    setFormData({
+      company: loading || !profile.company ? '' : profile.company,
+      website: loading || !profile.website ? '' : profile.website,
+      location: loading || !profile.location ? '' : profile.location,
+      status: loading || !profile.status ? '' : profile.status,
+      skills: loading || !profile.skills ? '' : profile.skills.join(','),
+      bio: loading || !profile.bio ? '' : profile.bio,
+      youtube: loading || !profile.social.youtube ? '' : profile.social.youtube,
+      facebook:
+        loading || !profile.social.facebook ? '' : profile.social.facebook,
+      vk: loading || !profile.social.vk ? '' : profile.social.vk,
+      instagram:
+        loading || !profile.social.instagram ? '' : profile.social.instagram
+    })
+  }, [loading])
+
+  useEffect(() => {
     M.FormSelect.init(selectStatusRef.current)
   }, [])
 
@@ -51,7 +74,7 @@ const CreateProfile = ({ createProfile }) => {
 
   const onSubmit = e => {
     e.preventDefault()
-    createProfile(formData, history)
+    createProfile(formData, history, true)
   }
 
   return (
@@ -67,7 +90,9 @@ const CreateProfile = ({ createProfile }) => {
               type='text'
               name='company'
             />
-            <label htmlFor='company'>Название компании</label>
+            <label className='active' htmlFor='company'>
+              Название компании
+            </label>
           </div>
           <div className='input-field col s12'>
             <input
@@ -77,7 +102,9 @@ const CreateProfile = ({ createProfile }) => {
               type='text'
               name='website'
             />
-            <label htmlFor='website'>Сайт</label>
+            <label className='active' htmlFor='website'>
+              Сайт
+            </label>
           </div>
           <div className='input-field col s12'>
             <input
@@ -87,7 +114,9 @@ const CreateProfile = ({ createProfile }) => {
               type='text'
               name='location'
             />
-            <label htmlFor='location'>Место жительства</label>
+            <label className='active' htmlFor='location'>
+              Место жительства
+            </label>
           </div>
 
           <div className='input-field col s12'>
@@ -98,7 +127,9 @@ const CreateProfile = ({ createProfile }) => {
               name='bio'
               className='materialize-textarea'
             />
-            <label htmlFor='bio'>О себе</label>
+            <label className='active' htmlFor='bio'>
+              О себе
+            </label>
           </div>
 
           <div className='input-field col s12'>
@@ -106,8 +137,7 @@ const CreateProfile = ({ createProfile }) => {
               value={status}
               onChange={e => onChange(e)}
               name='status'
-              ref={selectStatusRef}
-              required>
+              ref={selectStatusRef}>
               <option value='' disabled>
                 Выберите должность
               </option>
@@ -124,10 +154,10 @@ const CreateProfile = ({ createProfile }) => {
               id='skills'
               type='text'
               name='skills'
-              className='validate'
-              required
             />
-            <label htmlFor='skills'>Навыки</label>
+            <label className='active' htmlFor='skills'>
+              Навыки
+            </label>
           </div>
           <div className='input-field col s12'>
             <button
@@ -147,7 +177,9 @@ const CreateProfile = ({ createProfile }) => {
                   type='text'
                   name='youtube'
                 />
-                <label htmlFor='youtube'>Ссылка на YouTube</label>
+                <label className='active' htmlFor='youtube'>
+                  Ссылка на YouTube
+                </label>
               </div>
               <div className='input-field col s12'>
                 <input
@@ -157,7 +189,9 @@ const CreateProfile = ({ createProfile }) => {
                   type='text'
                   name='facebook'
                 />
-                <label htmlFor='facebook'>Ссылка на Facebook</label>
+                <label className='active' htmlFor='facebook'>
+                  Ссылка на Facebook
+                </label>
               </div>
               <div className='input-field col s12'>
                 <input
@@ -167,7 +201,9 @@ const CreateProfile = ({ createProfile }) => {
                   type='text'
                   name='vk'
                 />
-                <label htmlFor='vk'>Ссылка на VK</label>
+                <label className='active' htmlFor='vk'>
+                  Ссылка на VK
+                </label>
               </div>
               <div className='input-field col s12'>
                 <input
@@ -177,17 +213,30 @@ const CreateProfile = ({ createProfile }) => {
                   type='text'
                   name='instagram'
                 />
-                <label htmlFor='instagram'>Ссылка на Instagram</label>
+                <label className='active' htmlFor='instagram'>
+                  Ссылка на Instagram
+                </label>
               </div>
             </Fragment>
           )}
 
           <div className='col s12 center-align'>
-            <button
-              className='btn waves-effect waves-light btn-large'
-              type='submit'>
-              Создать профиль
-            </button>
+            <div className='row'>
+              <div className='col s6'>
+                <button
+                  className='btn waves-effect waves-light btn-large'
+                  type='submit'>
+                  Сохранить
+                </button>
+              </div>
+              <div className='col s6'>
+                <Link
+                  to='/dashboard'
+                  className='btn waves-effect waves-light btn-large'>
+                  Назад
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </form>
@@ -195,8 +244,16 @@ const CreateProfile = ({ createProfile }) => {
   )
 }
 
-CreateProfile.propTypes = {
-  createProfile: PropTypes.func.isRequired
+EditProfile.propTypes = {
+  createProfile: PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired
 }
 
-export default connect(null, { createProfile })(CreateProfile)
+const mapStateToProps = state => ({
+  profile: state.profile
+})
+
+export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
+  EditProfile
+)
