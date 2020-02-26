@@ -40,7 +40,7 @@ const CreateProfile = props => {
 
   const onChange = e => {
     setFormData({
-      ...setFormData,
+      ...formData,
       [e.target.name]: e.target.value
     })
   }
@@ -52,7 +52,6 @@ const CreateProfile = props => {
       <form onSubmit={e => onSubmit(e)} className='col s12 l4 offset-l4'>
         <div className='row'>
           <h3 className='center-align'>Создать профиль</h3>
-
           <div className='input-field col s12'>
             <input
               value={company}
@@ -60,8 +59,6 @@ const CreateProfile = props => {
               id='company'
               type='text'
               name='company'
-              className='validate'
-              required
             />
             <label htmlFor='company'>Название компании</label>
           </div>
@@ -72,8 +69,6 @@ const CreateProfile = props => {
               id='website'
               type='text'
               name='website'
-              className='validate'
-              required
             />
             <label htmlFor='website'>Сайт</label>
           </div>
