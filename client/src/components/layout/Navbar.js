@@ -1,13 +1,51 @@
 import React, { Fragment, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import M from 'materialize-css/dist/js/materialize'
+import PropTypes from 'prop-types'
+import { logout } from '../../actions/auth'
 
-const Navbar = () => {
+const Navbar = ({ logout, auth }) => {
+  const { isAuthenticated, loading } = auth
+
+  const authLinks = isMobile => {
+    const props = isMobile
+      ? { id: 'mobile-nav', className: 'sidenav', ref: sidenavRef }
+      : { className: 'right hide-on-med-and-down' }
+
+    return (
+      <ul {...props}>
+        <li>
+          <a href='#!' onClick={logout}>
+            Выход
+          </a>
+        </li>
+      </ul>
+    )
+  }
+
+  const guestLinks = isMobile => {
+    const props = isMobile
+      ? { id: 'mobile-nav', className: 'sidenav', ref: sidenavRef }
+      : { className: 'right hide-on-med-and-down' }
+
+    return (
+      <ul {...props}>
+        <li>
+          <Link to='/register'>Регистрация</Link>
+        </li>
+        <li>
+          <Link to='/login'>Вход</Link>
+        </li>
+      </ul>
+    )
+  }
+
   const sidenavRef = useRef(null)
 
   useEffect(() => {
     M.Sidenav.init(sidenavRef.current)
-  }, [])
+  }, [isAuthenticated])
 
   return (
     <Fragment>
@@ -23,26 +61,27 @@ const Navbar = () => {
             className='right sidenav-trigger'>
             <i className='material-icons'>menu</i>
           </a>
-          <ul className='right hide-on-med-and-down'>
-            <li>
-              <Link to='/register'>Регистрация</Link>
-            </li>
-            <li>
-              <Link to='/'>Вход</Link>
-            </li>
-          </ul>
+          {!loading && (
+            <Fragment>{isAuthenticated ? authLinks() : guestLinks()}</Fragment>
+          )}
         </div>
       </nav>
-      <ul id='mobile-nav' className='sidenav' ref={sidenavRef}>
-        <li>
-          <Link to='/register'>Регистрация</Link>
-        </li>
-        <li>
-          <Link to='/'>Вход</Link>
-        </li>
-      </ul>
+      {!loading && (
+        <Fragment>
+          {isAuthenticated ? authLinks(true) : guestLinks(true)}
+        </Fragment>
+      )}
     </Fragment>
   )
 }
 
-export default Navbar
+Navbar.propTypes = {
+  logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, { logout })(Navbar)

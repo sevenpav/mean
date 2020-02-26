@@ -16,11 +16,12 @@ router.get('/me', auth, async (req, res) => {
     const profile = await Profile.findOne({
       user: req.user.id
     }).populate('user', ['name', 'avatar'])
+
     if (profile) {
       return res.json(profile)
     }
 
-    return res.status(400).json({
+    res.status(400).json({
       msg: 'Для этого пользователя нет профиля'
     })
   } catch (err) {

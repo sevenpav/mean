@@ -6,6 +6,8 @@ import Navbar from './components/layout/Navbar'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import Alert from './components/layout/Alert'
+import Dashboard from './components/dashboard/Dashboard'
+import PrivateRoute from './components/routing/PrivateRoute'
 import setAuthToken from './utils/setAuthToken'
 import { loadUser } from './actions/auth'
 
@@ -24,12 +26,13 @@ const App = () => {
         <Fragment>
           <Navbar />
           <Alert />
-          <div className='container'>
+          <section className='container'>
             <Switch>
-              <Route path='/' exact component={Login} />
-              <Route path='/register' component={Register} />
+              <Route path='/login' exact component={Login} />
+              <Route path='/register' exact component={Register} />
+              <PrivateRoute path='/dashboard' exact component={Dashboard} />
             </Switch>
-          </div>
+          </section>
         </Fragment>
       </Router>
     </Provider>
