@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setAlert } from '../../actions/alert'
 import { register } from '../../actions/auth'
 
-const Register = ({ setAlert, register }) => {
+const Register = ({ setAlert, register, isAuth }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,6 +28,10 @@ const Register = ({ setAlert, register }) => {
     }
   }
 
+  if (isAuth) {
+    return <Redirect to='/dashboard' />
+  }
+
   return (
     <div className='row'>
       <form onSubmit={e => onSubmit(e)} className='col s12 l4 offset-l4'>
@@ -41,6 +46,7 @@ const Register = ({ setAlert, register }) => {
               type='text'
               name='name'
               className='validate'
+              required
             />
             <label htmlFor='first_name'>Имя</label>
           </div>
@@ -52,6 +58,7 @@ const Register = ({ setAlert, register }) => {
               type='email'
               name='email'
               className='validate'
+              required
             />
             <label htmlFor='email'>E-mail</label>
           </div>
@@ -64,6 +71,7 @@ const Register = ({ setAlert, register }) => {
               name='password'
               className='validate'
               minLength='6'
+              required
             />
             <label htmlFor='password'>Пароль</label>
           </div>
@@ -76,6 +84,7 @@ const Register = ({ setAlert, register }) => {
               name='confirmPassword'
               className='validate'
               minLength='6'
+              required
             />
             <label htmlFor='confirm_password'>Подтвердите пароль</label>
           </div>
@@ -94,7 +103,12 @@ const Register = ({ setAlert, register }) => {
 
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired
+  register: PropTypes.func.isRequired,
+  isAuth: PropTypes.bool
 }
 
-export default connect(null, { setAlert, register })(Register)
+const mapStateToProps = state => ({
+  isAuth: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, { setAlert, register })(Register)

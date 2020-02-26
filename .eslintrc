@@ -4,6 +4,13 @@
     "node": true
   },
   "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
   "rules": {
     "no-unused-vars": [
       "error",

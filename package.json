@@ -6,7 +6,7 @@
     "start": "node server",
     "server": "nodemon server",
     "client": "yarn --cwd client start",
-    "dev": "concurrently \"yarn server\" \"yarn client\""
+    "dev": "concurrently 'yarn server' 'yarn client'"
   },
   "license": "MIT",
   "devDependencies": {

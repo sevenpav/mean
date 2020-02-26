@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { login } from '../../actions/auth'
+import { Redirect } from 'react-router-dom'
 
-const Login = () => {
+const Login = ({ login, isAuth }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -12,8 +16,14 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault()
+
+    login(email, password)
+  }
+
+  if (isAuth) {
+    return <Redirect to='/dashboard' />
   }
 
   return (
@@ -61,4 +71,13 @@ const Login = () => {
   )
 }
 
-export default Login
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuth: PropTypes.bool
+}
+
+const mapStateToProps = state => ({
+  isAuth: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, { login })(Login)
