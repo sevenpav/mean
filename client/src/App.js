@@ -7,17 +7,17 @@ import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import Alert from './components/layout/Alert'
 import Dashboard from './components/dashboard/Dashboard'
+import CreateProfile from './components/profile-forms/CreateProfile'
 import PrivateRoute from './components/routing/PrivateRoute'
 import setAuthToken from './utils/setAuthToken'
 import { loadUser } from './actions/auth'
 
-if (localStorage.token) {
-  setAuthToken(localStorage.token)
-}
-
 const App = () => {
   useEffect(() => {
-    store.dispatch(loadUser())
+    if (localStorage.token) {
+      setAuthToken(localStorage.token)
+      store.dispatch(loadUser())
+    }
   }, [])
 
   return (
@@ -31,6 +31,11 @@ const App = () => {
               <Route path='/login' exact component={Login} />
               <Route path='/register' exact component={Register} />
               <PrivateRoute path='/dashboard' exact component={Dashboard} />
+              <PrivateRoute
+                path='/create-profile'
+                exact
+                component={CreateProfile}
+              />
             </Switch>
           </section>
         </Fragment>

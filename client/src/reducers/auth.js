@@ -10,8 +10,8 @@ import {
 
 const initialState = {
   token: localStorage.getItem('token'),
-  isAuthenticated: null,
-  loading: true,
+  isAuth: null,
+  loading: false,
   user: null
 }
 
@@ -22,7 +22,7 @@ const auth = (state = initialState, action) => {
     case USER_LOADED:
       return {
         ...state,
-        isAuthenticated: true,
+        isAuth: true,
         loading: false,
         user: payload
       }
@@ -33,7 +33,7 @@ const auth = (state = initialState, action) => {
       return {
         ...state,
         ...payload,
-        isAuthenticated: true,
+        isAuth: true,
         loading: false
       }
     case REGISTER_FAIL:
@@ -43,8 +43,9 @@ const auth = (state = initialState, action) => {
       localStorage.removeItem('token')
       return {
         ...state,
+        user: null,
         token: null,
-        isAuthenticated: false,
+        isAuth: false,
         loading: false
       }
     default:

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import { logout } from '../../actions/auth'
 
 const Navbar = ({ logout, auth }) => {
-  const { isAuthenticated, loading } = auth
+  const { isAuth, loading } = auth
 
   const authLinks = isMobile => {
     const props = isMobile
@@ -15,6 +15,9 @@ const Navbar = ({ logout, auth }) => {
 
     return (
       <ul {...props}>
+        <li>
+          <Link to='/dashboard'>Профиль</Link>
+        </li>
         <li>
           <a href='#!' onClick={logout}>
             Выход
@@ -45,7 +48,7 @@ const Navbar = ({ logout, auth }) => {
 
   useEffect(() => {
     M.Sidenav.init(sidenavRef.current)
-  }, [isAuthenticated])
+  }, [isAuth])
 
   return (
     <Fragment>
@@ -62,14 +65,12 @@ const Navbar = ({ logout, auth }) => {
             <i className='material-icons'>menu</i>
           </a>
           {!loading && (
-            <Fragment>{isAuthenticated ? authLinks() : guestLinks()}</Fragment>
+            <Fragment>{isAuth ? authLinks() : guestLinks()}</Fragment>
           )}
         </div>
       </nav>
       {!loading && (
-        <Fragment>
-          {isAuthenticated ? authLinks(true) : guestLinks(true)}
-        </Fragment>
+        <Fragment>{isAuth ? authLinks(true) : guestLinks(true)}</Fragment>
       )}
     </Fragment>
   )

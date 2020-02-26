@@ -6,12 +6,13 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
+  CLEAR_PROFILE,
   LOGOUT
 } from './types'
-import { setAlert } from './alert'
 import setAuthToken from '../utils/setAuthToken'
+import { setAlert } from './alert'
 
-export const loadUser = () => async dispath => {
+export const loadUser = () => async dispatch => {
   if (localStorage.token) {
     setAuthToken(localStorage.token)
   }
@@ -19,18 +20,18 @@ export const loadUser = () => async dispath => {
   try {
     const res = await axios.get('/api/auth')
 
-    dispath({
+    dispatch({
       type: USER_LOADED,
       payload: res.data
     })
   } catch (err) {
-    dispath({
+    dispatch({
       type: AUTH_ERROR
     })
   }
 }
 
-export const register = user => async dispath => {
+export const register = user => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -42,21 +43,21 @@ export const register = user => async dispath => {
   try {
     const res = await axios.post('/api/users', body, config)
 
-    dispath({ type: REGISTER_SUCCESS, payload: res.data })
+    dispatch({ type: REGISTER_SUCCESS, payload: res.data })
   } catch (err) {
     const errors = err.response.data.errors
 
     if (errors) {
-      errors.forEach(({ msg }) => dispath(setAlert(msg)))
+      errors.forEach(({ msg }) => dispatch(setAlert(msg)))
     }
 
-    dispath({
+    dispatch({
       type: REGISTER_FAIL
     })
   }
 }
 
-export const login = (email, password) => async dispath => {
+export const login = (email, password) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -68,15 +69,17 @@ export const login = (email, password) => async dispath => {
   try {
     const res = await axios.post('/api/auth', body, config)
 
-    dispath({ type: LOGIN_SUCCESS, payload: res.data })
+    dispatch({ type: LOGIN_SUCCESS, payload: res.data })
+
+    dispatch(loadUser())
   } catch (err) {
     const errors = err.response.data.errors
 
     if (errors) {
-      errors.forEach(({ msg }) => dispath(setAlert(msg)))
+      errors.forEach(({ msg }) => dispatch(setAlert(msg)))
     }
 
-    dispath({
+    dispatch({
       type: LOGIN_FAIL
     })
   }
@@ -84,4 +87,5 @@ export const login = (email, password) => async dispath => {
 
 export const logout = () => dispatch => {
   dispatch({ type: LOGOUT })
+  dispatch({ type: CLEAR_PROFILE })
 }
