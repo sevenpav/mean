@@ -3,13 +3,8 @@ import { Provider } from 'react-redux'
 import store from './store'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
-import Login from './components/auth/Login'
-import Register from './components/auth/Register'
-import Alert from './components/layout/Alert'
-import Dashboard from './components/dashboard/Dashboard'
-import CreateProfile from './components/profile-forms/CreateProfile'
-import EditProfile from './components/profile-forms/EditProfile'
-import PrivateRoute from './components/routing/PrivateRoute'
+import Landing from './components/layout/Landing'
+import Routes from './components/routing/Routes'
 import setAuthToken from './utils/setAuthToken'
 import { loadUser } from './actions/auth'
 
@@ -26,24 +21,10 @@ const App = () => {
       <Router>
         <Fragment>
           <Navbar />
-          <Alert />
-          <section className='container'>
-            <Switch>
-              <Route path='/login' exact component={Login} />
-              <Route path='/register' exact component={Register} />
-              <PrivateRoute path='/dashboard' exact component={Dashboard} />
-              <PrivateRoute
-                path='/create-profile'
-                exact
-                component={CreateProfile}
-              />
-              <PrivateRoute
-                path='/edit-profile'
-                exact
-                component={EditProfile}
-              />
-            </Switch>
-          </section>
+          <Switch>
+            <Route path='/' exact component={Landing} />
+            <Route component={Routes} />
+          </Switch>
         </Fragment>
       </Router>
     </Provider>
